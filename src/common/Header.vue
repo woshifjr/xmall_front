@@ -26,7 +26,7 @@
               <!-- 用户 -->
               <div class="user pr">
                 <router-link to="/user">个人中心</router-link>
-                <div class="nav-user-wrapper pa" v-if="false">
+                <div class="nav-user-wrapper pa" v-if="login">
                   <div class="nav-user-list">
                     <ul>
                       <!-- 头像 -->
@@ -61,6 +61,8 @@
 
               <!-- 购物车 -->
               <div
+                @mouseenter="cartShowState(true)"
+                @mouseleave="cartShowState(false)"
                 class="shop pr"
               >
                 <router-link to="/cart"></router-link>
@@ -69,7 +71,7 @@
                 </span>
 
                 <!-- 购物车显示 -->
-                <div class="nav-user-wrapper pa active" v-show="false">
+                <div class="nav-user-wrapper pa active" v-show="showCart">
                   <div class="nav-user-list">
                     <div class="full">
                       <div class="nav-cart-items">
@@ -153,62 +155,26 @@
 </template>
 
 <script>
-// import { mapState, mapMutations } from "vuex";
-// import { removeStore, getStore, setStore } from "@/utils/storage";
-
-export default {
-  data() {
-    return {
-      productInfo: ""
+    import { mapState,mapMutations } from 'vuex'
+    export default {
+        data() {
+            return {
+                productInfo: ""
+            };
+        },
+        computed:{
+            ...mapState(['login','userInfo','cartList','showCart'])
+        },
+        methods: {
+            ...mapMutations(['SHOWCART']),
+            //购物车的显示/隐藏
+            cartShowState(state){
+                this.SHOWCART({
+                    showCart:state
+                })
+            }
+        },
     };
-  },
-//   computed: {
-//     ...mapState(["login", "userInfo", "cartList", "showCart"]),
-//     totalNum() {
-//       return (
-//         this.cartList &&
-//         this.cartList.reduce((total, item) => {
-//           total += item.productNum;
-//           return total;
-//         }, 0)
-//       );
-//     },
-//     totalPrice(){
-//       return (
-//         this.cartList &&
-//         this.cartList.reduce((total, item) => {
-//           total += item.productNum * item.salePrice;
-//           return total;
-//         }, 0)
-//       );
-//     }
-//   },
-//   async mounted() {
-//     if (this.login) {
-//       const res = await this.$http.post("/api/cartList", { userId: getStore("id") });
-//       if (res.data.success === true) {
-//         setStore("buyCart", res.data.cartList.cartList);
-//         this.INITBUYCART();
-//       }
-//     } else {
-//       this.INITBUYCART();
-//     }
-//   },
-//   methods: {
-//     ...mapMutations(["SHOWCART", "INITBUYCART"]),
-//     cartShowState(state) {
-//       this.SHOWCART({
-//         showCart: state
-//       });
-//     },
-//     logout() {
-//       removeStore("token");
-//       removeStore("buyCart");
-//       window.location.href = "/";
-//     }
-//   },
-//   created() {}
-};
 </script>
 
 <style lang="scss" scoped>

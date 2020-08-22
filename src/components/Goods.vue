@@ -11,8 +11,11 @@
         <h3 class="sub-title ellipsis">{{goods.subTitle}}</h3>
         <div class="good-price pr">
           <div class="ds pa">
-            <a href>
-              <el-button type="default" size="medium">查看详情</el-button>
+            <a href="javascript:;">
+                <el-button 
+                    @click='productDetail(goods.productId)'
+                    type="default" 
+                    size="medium">查看详情</el-button>
             </a>
             <a href>
               <el-button type="primary" size="medium">加入购物车</el-button>
@@ -34,6 +37,14 @@
         data() {
             return {
                 
+            }
+        },
+        methods: {
+            productDetail(productId){
+                //编程式导航
+                this.$router.push({
+                    path: `goodsDetail?productId=${productId}`
+                })
             }
         },
     }
